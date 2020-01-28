@@ -1,6 +1,13 @@
 
 @extends('layouts.app',["current" => "home"])
 <style>
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Overlock&display=swap');
+
+* {
+    font-family: "Open Sans",Verdana,Arial;
+    font-size: 14px;
+}
 #titulo_page::after {
     background: #aac none repeat scroll 0 0;
     content: "";
@@ -13,9 +20,21 @@
     width: 45%;
     margin: 0 auto;
 }
+.form-row-busca {
+    padding: 3px;
+    margin: 0 0 5px;
+    height: 40px;
+}
+.form-row-busca input, select {
+    border: 1px solid #CCC;
+    height: 28px;
+    width: 46px;
+    padding: 3px 3px 3px 4px;
+}
 .form-caixa label {
-    width: 136px;
+    width: 139px;
     text-align: right;
+    
 }
 #btn-pesquisar {
     border: 1px solid #dbdbdb;
@@ -39,6 +58,18 @@
     margin: 0 0 0 0;
     height: 32px;
 }
+a h5 {
+    text-decoration: none;
+    color: #255786;
+    padding: 10px 0px 2px 5px;
+    display: block;
+    font-family: 'Overlock';
+    font-size: 1.3em;
+    text-transform: uppercase;
+}
+.card-text {
+    text-align: justify;
+}
 </style>
 @section('body')
 
@@ -50,41 +81,52 @@
             Serviço de Informação ao Cidadão, que encaminhará sua solicitação à área responsável.</p>
             <div class="form-caixa">
                     <form id="form_busca" action="/busca">
-                            <label for="">Número da Licitação:</label>
-                    <input name="num_licitacao" id="num_licitacao" type="text" style="width: 50px;" value="{{request()->input('num_licitacao')}}"><br>
-                            <label for="">Ano da Licitação:</label>
-                    <input name="ano_licitacao" id="ano_licitacao" style="width: 50px;" type="text" width="30px" value="{{request()->input('ano_licitacao')}}"><br>
-                            <label for="">Modalidade:</label>
-                            <select name="modalidade_licitacao" id="modalidade_licitacao" style="width: 150px;" name="modalidade" id="modalidade">
-                                    <option selected value=""></option>    
-                                @foreach($modalidades as $modalidade)
-                                @if (request()->input('modalidade_licitacao') == $modalidade->id )
-                                <option selected value="{{$modalidade->id}}">{{$modalidade->titulo}}</option>   
-                                @else
-                                <option value="{{$modalidade->id}}">{{$modalidade->titulo}}</option>
-                                @endif 
-                                @endforeach
-                            </select><br>
-                            <label for="">Objeto:</label>
-                            <input name="objeto_licitacao" id="objeto_licitacao" style="width: 250px;" type="text" width="30px" value="{{request()->input('objeto_licitacao')}}"><br>
-                            <label for="">Situação:</label>
-                            <select name="situacao_licitacao" id="situacao_licitacao" style="width: 150px;">
-                                    @if (request()->input('situacao_licitacao') != "" && request()->input('situacao_licitacao') == 1)
-                                    <option selected value="1">Aberta</option>
-                                    <option value="0">Fechada</option>
-                                    @endif      
-                                    @if (request()->input('situacao_licitacao') != "" && request()->input('situacao_licitacao') == 0)
-                                    <option  value="1">Aberta</option>
-                                    <option selected value="0">Fechada</option>
-                                    @endif
-                                    @if (request()->input('situacao_licitacao') == null)
-                                    <option selected value=""></option>  
-                                    <option  value="1">Aberta</option>
-                                    <option  value="0">Fechada</option>
-                                    @endif
-                                    
-        
-                                </select>
+                        <div class="form-row-busca">
+                                <label for="">Número da Licitação:</label>
+                                <input name="num_licitacao" id="num_licitacao" type="text" style="width: 50px;" value="{{request()->input('num_licitacao')}}"><br>
+                        </div>
+
+                        <div class="form-row-busca">
+                                <label for="">Ano da Licitação:</label>
+                                <input name="ano_licitacao" id="ano_licitacao" style="width: 50px;" type="text" width="30px" value="{{request()->input('ano_licitacao')}}"><br>
+                        </div>
+                        <div class="form-row-busca">
+                                <label for="">Modalidade:</label>
+                                <select name="modalidade_licitacao" id="modalidade_licitacao" style="width: 150px;" name="modalidade" id="modalidade">
+                                        <option selected value=""></option>    
+                                    @foreach($modalidades as $modalidade)
+                                    @if (request()->input('modalidade_licitacao') == $modalidade->id )
+                                    <option selected value="{{$modalidade->id}}">{{$modalidade->titulo}}</option>   
+                                    @else
+                                    <option value="{{$modalidade->id}}">{{$modalidade->titulo}}</option>
+                                    @endif 
+                                    @endforeach
+                                </select><br>
+                        </div>
+                        <div class="form-row-busca">
+                                <label for="">Objeto:</label>
+                                <input name="objeto_licitacao" id="objeto_licitacao" style="width: 250px;" type="text" width="30px" value="{{request()->input('objeto_licitacao')}}"><br>
+                        </div>
+                        <div class="form-row-busca">
+                                <label for="">Situação:</label>
+                                <select name="situacao_licitacao" id="situacao_licitacao" style="width: 150px;">
+                                        @if (request()->input('situacao_licitacao') != "" && request()->input('situacao_licitacao') == 1)
+                                        <option selected value="1">Aberta</option>
+                                        <option value="0">Fechada</option>
+                                        @endif      
+                                        @if (request()->input('situacao_licitacao') != "" && request()->input('situacao_licitacao') == 0)
+                                        <option  value="1">Aberta</option>
+                                        <option selected value="0">Fechada</option>
+                                        @endif
+                                        @if (request()->input('situacao_licitacao') == null)
+                                        <option selected value=""></option>  
+                                        <option  value="1">Aberta</option>
+                                        <option  value="0">Fechada</option>
+                                        @endif
+                                        
+            
+                                    </select>
+                        </div>
                             <input id="btn-pesquisar" type="submit" value="pesquisar">
                         </form>
             </div><br>
@@ -106,14 +148,14 @@
                 <div class="cardf">
                         @foreach ($result as $item)
                         <div class="card-body">
-                        <h5 class="card-title">{{$item->titulo}} nº {{$item->numero}}</h5>
-                            <h4>Situação: @if ($item->situacao == 1)
+                        <a href="/licitacao/{{$item->numero}}"><h5 class="card-title"><i class="glyphicon glyphicon-chevron-right"></i> {{$item->titulo}} nº {{$item->numero}}/{{$item->data_abertura}}</h5></a>
+                            <h6><b>Situação:</b> @if ($item->situacao == 1)
                                 ABERTA
                             @else
                                 FECHADA
-                            @endif</h4>
+                            @endif</h6>
                             <p class="card-text"><b>Obejto: </b> {{$item->objeto}}</p>
-                            <a  class="more-link" href="/licitacao/{{$item->numero}}" class="btn btn-primary">[+]Detalhes</a>
+                            {{-- <a  class="more-link" href="/licitacao/{{$item->numero}}" class="btn btn-primary">[+]Detalhes</a> --}}
                         </div>
                         @endforeach
                         <div class="card-footed" style="margin: 0 auto;">

@@ -1,5 +1,13 @@
 @extends('layouts.app',["current" => "home"])
 <style>
+
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans|Overlock&display=swap');
+
+    * {
+        font-family: "Open Sans",Verdana,Arial;
+        font-size: 14px; 
+        line-height: 18px;
+    }
     #btn-voltar {
         border: 1px solid #dbdbdb;
         border-radius: 4px;
@@ -10,6 +18,26 @@
         padding: 5px 1em 6px 1em;
         margin: 0 0 0 0;
         height: 32px;
+    }
+    #title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #303C49;
+        margin: 18px 0 12px 0;
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 0px;
+        border: medium none;
+    }
+    b {
+        color: #144869;
+    }
+    h6 {
+        text-align: justify;
+        display: block;
+        font-family: "Open Sans",Verdana,Arial;
+       
     }
 </style>
 @section('body')
@@ -29,7 +57,7 @@
         </div>
     </div>
     <div class="card-bodyd">
-    <h4>Nº {{$licitacao->numero}}</h4>
+    <h4 id="title">Nº {{$licitacao->numero}}/{{$licitacao->data_abertura}}</h4>
     <h6><b>Objeto: </b>{{$licitacao->objeto}}</h6>
     <h6><b>Nº de Itens: </b>{{$licitacao->qtd_itens}}</h6>
     <h6><b>Situação: </b>{{$licitacao->situacao==1?'ABERTA':'FECHADA'}}</h6>
@@ -42,7 +70,7 @@
     <h6><b>Nome do Vencedor da Licitação: </b>{{$licitacao->nome_vendedor}}</h6>
     <h6><b>Anexos:</b></h6>
     @foreach ($anexos as $item)
-    <h6><a href="{{$item->link}}">{{$item->anexo}}</a></h6>
+    <h6><a href="/download/{{$item->id}}">{{$item->anexo}}</a></h6>
     @endforeach
     </div>
 </div>

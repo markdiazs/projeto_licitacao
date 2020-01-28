@@ -7,6 +7,7 @@ use App\Licitacao;
 use Illuminate\Http\Request;
 use App\Modalidade;
 use DateTime;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class LicitacaoController extends Controller
@@ -41,16 +42,20 @@ class LicitacaoController extends Controller
                     $query += [$key => $value];
                 }
            }
-           print_r($query);
+        //    print_r($query);
         //     exit();
        
         $modalidades = Modalidade::All();
         if($data['data_abertura'] != null){
-        $licitacao = DB::table('licitacoes')->where($query)->whereYear('data_abertura','=',$data['data_abertura'])->paginate(1);
+
+        $licitacao = DB::table('licitacoes')->where($query)->whereYear('data_abertura','=',$data['data_abertura'])->paginate(4);
+      
         }else{
-        $licitacao = DB::table('licitacoes')->where($query)->paginate(1); 
+
+        $licitacao = DB::table('licitacoes')->where($query)->paginate(4); 
+ 
         }
-        
+
         $anexos = Anexo::all();
         return view('index',['modalidades' => $modalidades,'result' => $licitacao,'anexo' => $anexos,'dataForm' => $data]);
     }
@@ -107,11 +112,11 @@ class LicitacaoController extends Controller
 
             foreach($request->file('anexoname') as $anexo){
                 $data = [
-                    'anexo' => $anexo->getClientOriginalName(),
+                    'anexo' => $licitacao['numero'] .'_'. $anexo->getClientOriginalName(),
                     'link' => public_path().'/anexos/' . $anexo->getClientOriginalName(),
                     'licitacao_id' => $licitacao_id
                 ];
-                $anexo->move(public_path().'/anexos/',$data['anexo'] .'_'.$licitacao['numero']);
+                $anexo->move(public_path().'/anexos/',$data['anexo']);
                 DB::table('anexos')->insert($data);
                 
             }
@@ -125,10 +130,22 @@ class LicitacaoController extends Controller
     public function consulta ($numero)
     {
         $licitacao = DB::table('licitacoes')->where('numero',$numero)->first();
+        $data = new DateTime($licitacao->data_abertura);
+        $licitacao->data_abertura = $data->format('Y');
         $anexos = DB::table('anexos')->where('licitacao_id',$licitacao->id)->get();
         //  var_dump($anexos);
         // exit();
          return view('detalhes_licitacao',['licitacao' => $licitacao,'anexos' => $anexos]) ;
+        
+    }
+
+    public function baixarArquivo($id)
+    {
+        $arquivo = Anexo::findOrFail($id);
+        // return response()->download(storage_path("public/anexos/".$arquivo->anexo));
+
+        $download_path = ( public_path() . '/anexos/' . $arquivo->anexo );
+        return response()->download($download_path);
         
     }
 }
