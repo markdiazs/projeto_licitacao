@@ -14,6 +14,8 @@ class LicitacaoController extends Controller
 {
     public function index()
     {
+        // $licitacoes = Licitacao::All();
+        // var_dump($licitacoes);
         $modalidades = Modalidade::All();
         return view('index',['modalidades' => $modalidades]);
     }
@@ -33,27 +35,29 @@ class LicitacaoController extends Controller
             'objeto'     => $request->input('objeto_licitacao'),
             'situacao'   => $request->input('situacao_licitacao')
         ];
-        
-        // var_dump($data);
-        // exit();
         $query = [];
            foreach($data as $key => $value){
                 if($value != "" && $key != 'data_abertura'){
                     $query += [$key => $value];
                 }
            }
+        //   $test = Licitacao::buscarLicitacoes($data);
+        //   var_dump($test->paginate(1));
+        //   exit();
+           // var_dump($data);
+           // exit();
         //    print_r($query);
         //     exit();
        
         $modalidades = Modalidade::All();
         if($data['data_abertura'] != null){
 
-        $licitacao = DB::table('licitacoes')->where($query)->whereYear('data_abertura','=',$data['data_abertura'])->paginate(4);
-      
+        // $licitacao = DB::table('licitacoes')->where($query)->whereYear('data_abertura','=',$data['data_abertura'])->paginate(4);
+            $licitacao = Licitacao::buscarLicitacoes($data)->paginate(3);
         }else{
 
-        $licitacao = DB::table('licitacoes')->where($query)->paginate(4); 
- 
+        // $licitacao = DB::table('licitacoes')->where($query)->paginate(4); 
+        $licitacao = Licitacao::buscarLicitacoes($data)->paginate(3);
         }
 
         $anexos = Anexo::all();
