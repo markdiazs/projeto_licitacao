@@ -13,7 +13,7 @@ class Licitacao extends Model
         return $this->hasMany(Anexo::class,'id','licitacao_id');
     }
     public static function buscarLicitacoes($filtros = []){
-        var_dump($filtros);
+        // var_dump($filtros);
         $result = DB::Table('licitacoes')
         ->select('*')
         ->where(function ($query) use($filtros){
