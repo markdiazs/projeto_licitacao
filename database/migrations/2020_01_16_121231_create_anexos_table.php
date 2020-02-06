@@ -17,8 +17,8 @@ class CreateAnexosTable extends Migration
             $table->increments('id');
             $table->string('anexo');
             $table->string('link');
-            $table->integer('licitacao_id')->unsigned();
-            $table->foreign('licitacao_id')->references('id')->on('licitacoes');
+            $table->integer('licitacoes_id')->unsigned();
+            $table->foreign('licitacoes_id')->references('id')->on('licitacoes');
             $table->timestamps();
         });
     }

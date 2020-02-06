@@ -8,6 +8,6 @@ class Anexo extends Model
 {
   public function licitacao()
   {
-      return $this->belongsTo(Licitacao::class,'id','licitacao_id');
+      return $this->belongsTo('App\licitacao');
   }
 }

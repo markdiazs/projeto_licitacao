@@ -14,8 +14,6 @@ class LicitacaoController extends Controller
 {
     public function index()
     {
-        // $licitacoes = Licitacao::All();
-        // var_dump($licitacoes);
         $modalidades = Modalidade::All();
         return view('index',['modalidades' => $modalidades]);
     }
@@ -28,84 +26,65 @@ class LicitacaoController extends Controller
 
     public function busca(Request $request)
     {
+        // definindo os filtros para a busca
         $data = [
             'numero'        => $request->input('num_licitacao'),
-            'data_abertura'        => $request->input('ano_licitacao'),
-            'modalidade' => $request->input('modalidade_licitacao'),
-            'objeto'     => $request->input('objeto_licitacao'),
-            'situacao'   => $request->input('situacao_licitacao')
+            'data_abertura' => $request->input('ano_licitacao'),
+            'modalidade'    => $request->input('modalidade_licitacao'),
+            'objeto'        => $request->input('objeto_licitacao'),
+            'situacao'      => $request->input('situacao_licitacao')
         ];
-        $query = [];
-           foreach($data as $key => $value){
-                if($value != "" && $key != 'data_abertura'){
-                    $query += [$key => $value];
-                }
-           }
-        //   $test = Licitacao::buscarLicitacoes($data);
-        //   var_dump($test->paginate(1));
-        //   exit();
-           // var_dump($data);
-           // exit();
-        //    print_r($query);
-        //     exit();
-       
+
+        //recuperando as modalidades
         $modalidades = Modalidade::All();
-        if($data['data_abertura'] != null){
-
-        // $licitacao = DB::table('licitacoes')->where($query)->whereYear('data_abertura','=',$data['data_abertura'])->paginate(4);
-            $licitacao = Licitacao::buscarLicitacoes($data)->paginate(3);
-        }else{
-
-        // $licitacao = DB::table('licitacoes')->where($query)->paginate(4); 
-        $licitacao = Licitacao::buscarLicitacoes($data)->paginate(3);
-        }
-
+        
+        // recuperando os anexos
         $anexos = Anexo::all();
+        
+        // buscando licitacoes com base nos filtros
+        $licitacao = Licitacao::buscarLicitacoes($data)->paginate(3);
+
         return view('index',['modalidades' => $modalidades,'result' => $licitacao,'anexo' => $anexos,'dataForm' => $data]);
     }
-
     public function store(Request $request)
     {
-    
-    
         $this->validate($request, [
-            'anexoname' => 'required',
-            'titulo_licitacao' => 'required',
-            'numero_licitacao' => 'required',
-            'num_itens_licitacao' => 'required',
-            'modalidade' => 'required',
-            'local_licitacao' => 'required',
-            'cidade_licitacao' => 'required',
-            'abertura_licitacao' => 'required',
-            'contato_licitacao' => 'required',
-            'valor_estimado' => 'required',
-            'impugnacao_licitacao' => 'required',
-            'vencedor_licitacao' => 'required',
-            'objeto_licitacao' => 'required',
-            'situacao' => 'required'
+            'anexoname'             => 'required',
+            'titulo_licitacao'      => 'required',
+            'numero_licitacao'      => 'required',
+            'num_itens_licitacao'   => 'required',
+            'modalidade'            => 'required',
+            'local_licitacao'       => 'required',
+            'cidade_licitacao'      => 'required',
+            'abertura_licitacao'    => 'required',
+            'contato_licitacao'     => 'required',
+            'valor_estimado'        => 'required',
+            'impugnacao_licitacao'  => 'required',
+            'vencedor_licitacao'    => 'required',
+            'objeto_licitacao'      => 'required',
+            'situacao'              => 'required'
 
         ]);
 
-        
-        
+        // formatando a data
         $data_abertura = new DateTime($request->input('abertura_licitacao'));
         $data_abertura->format('Y.m.d');
 
         $licitacao = [
-            'titulo' => $request->input('titulo_licitacao'),
-            'numero' => $request->input('numero_licitacao'),
-            'qtd_itens' => $request->input('num_itens_licitacao'),
+            'titulo'        => $request->input('titulo_licitacao'),
+            'numero'        => $request->input('numero_licitacao'),
+            'qtd_itens'     => $request->input('num_itens_licitacao'),
             'modalidade_id' => $request->input('modalidade'),
-            'modalidade' => $request->input('modalidade'),
-            'local' => $request->input('local_licitacao'),
-            'cidade' => $request->input('cidade_licitacao'),
+            'modalidade'    => $request->input('modalidade'),
+            'local'         => $request->input('local_licitacao'),
+            'cidade'        => $request->input('cidade_licitacao'),
             'data_abertura' => $data_abertura,
-            'contato' => $request->input('contato_licitacao'),
-            'valor_estimado' => $request->input('titulo_licitacao'),
-            'impugnacoes' => $request->input('impugnacao_licitacao'),
+            'contato'       => $request->input('contato_licitacao'),
+            'valor_estimado'=> $request->input('titulo_licitacao'),
+            'impugnacoes'   => $request->input('impugnacao_licitacao'),
             'nome_vendedor' => $request->input('vencedor_licitacao'),
-            'objeto' => $request->input('objeto_licitacao'),
-            'situacao' => $request->input('situacao')
+            'objeto'        => $request->input('objeto_licitacao'),
+            'situacao'      => $request->input('situacao')
         ];
 
          $licitacao_id = DB::table('licitacoes')->insertGetId($licitacao);
@@ -116,9 +95,9 @@ class LicitacaoController extends Controller
 
             foreach($request->file('anexoname') as $anexo){
                 $data = [
-                    'anexo' => $licitacao['numero'] .'_'. $anexo->getClientOriginalName(),
-                    'link' => public_path().'/anexos/' . $anexo->getClientOriginalName(),
-                    'licitacao_id' => $licitacao_id
+                    'anexo'         => $licitacao['numero'] .'_'. $anexo->getClientOriginalName(),
+                    'link'          => public_path().'/anexos/' . $anexo->getClientOriginalName(),
+                    'licitacoes_id' => $licitacao_id
                 ];
                 $anexo->move(public_path().'/anexos/',$data['anexo']);
                 DB::table('anexos')->insert($data);
@@ -136,7 +115,8 @@ class LicitacaoController extends Controller
         $licitacao = DB::table('licitacoes')->where('numero',$numero)->first();
         $data = new DateTime($licitacao->data_abertura);
         $licitacao->data_abertura = $data->format('Y');
-        $anexos = DB::table('anexos')->where('licitacao_id',$licitacao->id)->get();
+        $anexos = DB::table('anexos')->where('licitacoes_id',$licitacao->id)->get();
+        // // dd($anexos);
         //  var_dump($anexos);
         // exit();
          return view('detalhes_licitacao',['licitacao' => $licitacao,'anexos' => $anexos]) ;
