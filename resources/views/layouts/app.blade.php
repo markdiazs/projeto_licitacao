@@ -17,8 +17,7 @@
 </head>
 <body>
     <div class="container">
-        @component('components.navbar',["current" => $current ])
-        @endcomponent
+        
         <div role="main">
             @hasSection ('body')
                 @yield('body') 

@@ -3,42 +3,7 @@
 
     @import url('https://fonts.googleapis.com/css?family=Open+Sans|Overlock&display=swap');
 
-    * {
-        font-family: "Open Sans",Verdana,Arial;
-        font-size: 14px; 
-        line-height: 18px;
-    }
-    #btn-voltar {
-        border: 1px solid #dbdbdb;
-        border-radius: 4px;
-        box-shadow: inset 0px 1px 0px 0px white;
-        color: #777;
-        text-shadow: 0px 1px 0px white;
-        font-weight: bold;
-        padding: 5px 1em 6px 1em;
-        margin: 0 0 0 0;
-        height: 32px;
-    }
-    #title {
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #303C49;
-        margin: 18px 0 12px 0;
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-        padding: 0px;
-        border: medium none;
-    }
-    b {
-        color: #144869;
-    }
-    h6 {
-        text-align: justify;
-        display: block;
-        font-family: "Open Sans",Verdana,Arial;
-       
-    }
+    
 </style>
 @section('body')
 

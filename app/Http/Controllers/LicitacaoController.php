@@ -90,9 +90,6 @@ class LicitacaoController extends Controller
          $licitacao_id = DB::table('licitacoes')->insertGetId($licitacao);
         // anexos
         if($request->hasFile('anexoname')){
-
-            $anexo = new Anexo();
-
             foreach($request->file('anexoname') as $anexo){
                 $data = [
                     'anexo'         => $licitacao['numero'] .'_'. $anexo->getClientOriginalName(),
@@ -105,9 +102,7 @@ class LicitacaoController extends Controller
             }
             unset($anexo);
         }
-
         return redirect('/');
-
     }
 
     public function consulta ($numero)
@@ -116,18 +111,12 @@ class LicitacaoController extends Controller
         $data = new DateTime($licitacao->data_abertura);
         $licitacao->data_abertura = $data->format('Y');
         $anexos = DB::table('anexos')->where('licitacoes_id',$licitacao->id)->get();
-        // // dd($anexos);
-        //  var_dump($anexos);
-        // exit();
-         return view('detalhes_licitacao',['licitacao' => $licitacao,'anexos' => $anexos]) ;
-        
+         return view('detalhes_licitacao',['licitacao' => $licitacao,'anexos' => $anexos]) ; 
     }
 
     public function baixarArquivo($id)
     {
         $arquivo = Anexo::findOrFail($id);
-        // return response()->download(storage_path("public/anexos/".$arquivo->anexo));
-
         $download_path = ( public_path() . '/anexos/' . $arquivo->anexo );
         return response()->download($download_path);
         

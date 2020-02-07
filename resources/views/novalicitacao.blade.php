@@ -1,18 +1,5 @@
 @extends('layouts.app',["current" => "categorias"])
 @section('body')
-<style>
-.more-link {
-    border: 1px solid #dbdbdb;
-    border-radius: 4px;
-    box-shadow: inset 0px 1px 0px 0px white;
-    color: #777;
-    text-shadow: 0px 1px 0px white;
-    font-weight: bold;
-    padding: 5px 1em 6px 1em;
-    margin: 0 0 0 0;
-    height: 32px;
-}
-</style>
 <div class="card-body">
         {{-- erros --}}
         @if (count($errors) > 0)
