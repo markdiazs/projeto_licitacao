@@ -21,6 +21,9 @@ Route::post('/novalicitacao/store','LicitacaoController@store');
 Route::get('/busca','LicitacaoController@busca');
 Route::get('/licitacao/{id}','LicitacaoController@consulta');
 Route::get('/download/{id}','LicitacaoController@baixarArquivo');
+Route::get('/graficoanual','GraficoController@index');
+Route::post('/graficoanual','GraficoController@getLicitacoes');
+Route::get('/graficoanualapi','GraficoController@getJson');
 
 // //Departaments
 
