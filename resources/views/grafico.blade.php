@@ -84,9 +84,15 @@ text.source {
 
 <script>
 
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
     $.ajax({
+            crossDomain: true,
+            async: true,
+            cache: false,
+            timeout: 15000,
             type:"GET",
-            url: 'http://127.0.0.1:8000/graficoanualapi',
+            url: 'http://10.8.15.197:3030/graficoanualapi',
             dataType: 'json',
             success: function(retorno) {
                 if(retorno) {
